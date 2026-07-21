@@ -133,12 +133,7 @@ android {
         versionName "2.0.0"
         multiDexEnabled true //important
         resValue 'string', 'curseforge_api_key', getCFApiKey()
-        externalNativeBuild {
-            ndkBuild {
-                // Fix for Windows command line length limit
-                arguments "APP_SHORT_COMMANDS=true",
-                        "APP_LDFLAGS=-Wl,-z,max-page-size=16384 -Wl,-z,common-page-size=16384"
-            }
+        
         }
     }
 
@@ -181,12 +176,9 @@ android {
         }
     }
 
-    ndkVersion "27.3.13750724"
+    
 
-    externalNativeBuild {
-        ndkBuild {
-            path file('src/main/jni/Android.mk')
-        }
+    
     }
 
     compileOptions {
