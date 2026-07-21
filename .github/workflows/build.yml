@@ -23,10 +23,12 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Install NDK 26 and CMake
+    - name: Install NDK 26 and Delete NDK 27
       run: |
         yes | sdkmanager "ndk;26.3.11579264"
         yes | sdkmanager "cmake;3.22.1"
+        # DELETE THE BROKEN NDK 27 SO GRADLE CAN'T USE IT
+        rm -rf /usr/local/lib/android/sdk/ndk/27.0.12077973
 
     - name: Find and Build APK
       run: |
