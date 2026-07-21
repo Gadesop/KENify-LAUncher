@@ -2,7 +2,10 @@ name: Build Kenify Launcher APK
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches:
+      - main
+      - master
+      - kenify-branch
 
 jobs:
   build:
