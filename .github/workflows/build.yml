@@ -5,9 +5,6 @@ on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      ANDROID_NDK_HOME: "/usr/local/lib/android/sdk/ndk/26.3.11579264"
-      ANDROID_NDK_ROOT: "/usr/local/lib/android/sdk/ndk/26.3.11579264"
 
     steps:
     - uses: actions/checkout@v4
@@ -23,29 +20,12 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Install NDK 26 and NUKE NDK 27 completely
-      run: |
-        yes | sdkmanager "ndk;26.3.11579264"
-        yes | sdkmanager "cmake;3.22.1"
-        # Delete the folder
-        rm -rf /usr/local/lib/android/sdk/ndk/27.0.12077973
-        # Delete the LICENSE so Gradle fails if it tries to auto-install it!
-        rm -rf /usr/local/lib/android/sdk/licenses/android-sdk-preview-license
-        echo "NDK 27 completely locked out."
-        
-    - name: Force Fetch SDL3 Submodule
-      run: |
-        git submodule sync --recursive
-        git submodule update --init --recursive --force
-
-    - name: Find and Build APK
+    - name: Build APK
       run: |
         GRADLEW=$(find . -name "gradlew" -type f | head -n 1)
-        echo "Found gradlew at: $GRADLEW"
-        GRADLE_DIR=$(dirname "$GRADLEW")
-        cd "$GRADLE_DIR"
+        cd $(dirname "$GRADLEW")
         chmod +x ./gradlew
-        ./gradlew assembleDebug
+        ./gradlew build
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
